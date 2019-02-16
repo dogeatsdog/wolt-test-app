@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+    #map{
+      height: 800px;
+      width: 800px;
+    }
+  </style>
+  </head>
+  <body>
+    <form method = 'POST'>
+      {{form.hidden_tag() }}
+      {{form.day.label}}{{form.day()}}
+      {{form.hour.label}}{{form.hour()}}
+      {{form.submit()}}
+    </form>
+
+    <div id="map">
+
+    </div>
+    <h3>Now the information for the day  {{session['day']}} and time {{session['hour']}}-{{session['hour']|int+1}}h is shown.</h3>
+
+
+    <script>
+
+        function initMap(){
+          var opt = {
+            center: {lat:60.171787, lng: 24.938237},
+            zoom: 13,
+          };
+          var map = new google.maps.Map(document.getElementById("map"),opt);
+
+
+          {% for item in locations %}
+          var marker = new google.maps.Marker({
+            position:  {lat:{{locations[item][0][1]}}, lng:{{locations[item][0][0]}}},
+            map: map,
+            title: "{{item}}"
+              });
+            attachInfo(marker, 'Id: <h3>{{item}}</h3> Median delivery time: <h3> {{medians[item]}} min</h3>');
+          {% endfor %}
+
+              function attachInfo(marker, median) {
+                    var infowindow = new google.maps.InfoWindow({
+                          content: median
+                            });
+
+              marker.addListener("click", function(){
+                  infowindow.open(map, marker);
+                              });
+
+      }
+      }
+
+      </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCB9tE_bihw2QBIEPZs04DVupohRF7ijHw&callback=initMap"
+        async defer></script>
+
+
+  </body>
+</html>
