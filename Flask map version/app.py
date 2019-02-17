@@ -3,7 +3,7 @@ import time
 import csv
 from collections import defaultdict
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField,SelectField
 import dateutil.parser
 import pytz
 
@@ -13,8 +13,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'mysecretkey'
 
 class InfoForm(FlaskForm):
-    day = StringField('Enter the date: ')
-    hour = StringField('What hour do you need?')
+    day = SelectField('Enter the date: ', choices=[('07-01', '7/01'), ('08-01', '8/01'),('09-01', '9/01'),('10-01', '10/01'),('11-01', '11/01'),('12-01', '12/01'),('13-01', '13/01')])
+    hour = SelectField('What hour do you need?: ', choices=[('10', '10-11'),('11', '11-12'),('12', '12-13'),('13', '13-14'),('14', '14-15'),('15', '15-16'),('16', '16-17'),('17', '17-18'),('18', '18-19'),('19', '19-20')])
     submit = SubmitField('Submit')
 
 
